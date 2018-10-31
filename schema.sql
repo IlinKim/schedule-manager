@@ -1,0 +1,7 @@
+-- CREATE TABLE `reservations` (
+--   `id` BIGINT NOT NULL AUTO_INCREMENT,
+--   `updated_at` TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+--   `created_at` TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+--   PRIMARY KEY (`id`),
+--   UNIQUE KEY `base_uri_UNIQUE` (`base_uri`)
+-- ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
