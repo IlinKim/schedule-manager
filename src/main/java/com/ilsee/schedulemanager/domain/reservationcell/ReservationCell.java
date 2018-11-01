@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "reservation_cells")
+@Table(name = "reservation_cells", uniqueConstraints = @UniqueConstraint(name = "reservation_cell_uk_01", columnNames = {"room_id", "date", "time_line_id"}))
 @ToString
 @EqualsAndHashCode(of = "id", callSuper = true)
 public class ReservationCell extends CreateModifyEntity {
