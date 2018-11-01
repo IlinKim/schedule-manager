@@ -1,47 +1,74 @@
 <script>
-  $(function() {
+    $(function () {
+        // page is now ready, initialize the calendar...
 
-    // page is now ready, initialize the calendar...
+        $('#calendar').fullCalendar({
+            // put your options and callbacks here
+            themeSystem: 'bootstrap4',
+            //bootstrap4 테마사용시 버튼 이미지 셋팅
+            bootstrapFontAwesome: {
+                close: 'fa-times',
+                prev: 'fa-chevron-left',
+                next: 'fa-chevron-right'
+            },
+            height: 'auto',
+            header: {
+                center: 'month,agendaWeek,agendaDay title',
+                left: 'myCustomButton'
 
-    $('#calendar').fullCalendar({
-      // put your options and callbacks here
-      header: { center: 'month,agendaWeek,agendaDay' }, // buttons for switching between views
-      defaultView: 'agendaWeek',
+            }, // buttons for switching between views
+            defaultView: 'agendaWeek',
+            customButtons: {
+                myCustomButton: {
+                    text: 'custom!',
+                    click: function () {
+                        alert('clicked the custom button!');
+                    }
+                }
+            },
 
-      views: {
-        month: { // name of view
-          titleFormat: 'YYYY, MM, DD'
-          // other view-specific options here
-        }
-      }
+            // slotLabelInterval: "00:30",
+
+            selectable: true,
+            selectHelper: true,
+            nowIndicator: true,
+
+
+
+
+
+            events: 'https://fullcalendar.io/demo-events.json',
+            select: function(startDate, endDate, jsEvent, view, resource) {
+                alert('selected ' + startDate.format() + ' to ' + endDate.format());
+            }
+        });
+
+        var calendar = $('#calendar').fullCalendar('getCalendar');
+
+        calendar.on('dayClick', function (date, jsEvent, view) {
+            console.log('clicked on ' + date.format());
+        });
+
     });
 
-    var calendar = $('#calendar').fullCalendar('getCalendar');
 
-    calendar.on('dayClick', function(date, jsEvent, view) {
-      console.log('clicked on ' + date.format());
-    });
+    function log(date, jsEvent, view) {
+        console.log('clicked on ' + date.format());
+    }
 
-  });
-
-
-  function log(date, jsEvent, view) {
-    console.log('clicked on ' + date.format());
-  }
-
-  // function getSelectBoxOptions(returnData) {
-  //   $.ajax(
-  //     {
-  //       url : "/api/v1/sacategoryproperty/selectboxes",
-  //       type: "GET",
-  //       success: function(data, textStatus, jqXHR) {
-  //         returnData(data);
-  //       },
-  //       error: function(jqXHR, textStatus, errorThrown) {
-  //         alert("초기 데이터 로딩에 실패하였습니다.");
-  //       }
-  //     }
-  //   );
-  // }
+    // function getSelectBoxOptions(returnData) {
+    //   $.ajax(
+    //     {
+    //       url : "/api/v1/sacategoryproperty/selectboxes",
+    //       type: "GET",
+    //       success: function(data, textStatus, jqXHR) {
+    //         returnData(data);
+    //       },
+    //       error: function(jqXHR, textStatus, errorThrown) {
+    //         alert("초기 데이터 로딩에 실패하였습니다.");
+    //       }
+    //     }
+    //   );
+    // }
 
 </script>
