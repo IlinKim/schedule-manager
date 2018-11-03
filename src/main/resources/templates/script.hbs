@@ -1,74 +1,78 @@
 <script>
-    $(function () {
-        // page is now ready, initialize the calendar...
+  $(function () {
+    // page is now ready, initialize the calendar...
 
-        $('#calendar').fullCalendar({
-            // put your options and callbacks here
-            themeSystem: 'bootstrap4',
-            //bootstrap4 테마사용시 버튼 이미지 셋팅
-            bootstrapFontAwesome: {
-                close: 'fa-times',
-                prev: 'fa-chevron-left',
-                next: 'fa-chevron-right'
-            },
-            height: 'auto',
-            header: {
-                center: 'month,agendaWeek,agendaDay title',
-                left: 'myCustomButton'
+    $('#calendar').fullCalendar({
+      // put your options and callbacks here
+      themeSystem: 'bootstrap4',
+      //bootstrap4 테마사용시 버튼 이미지 셋팅
+      bootstrapFontAwesome: {
+        close: 'fa-times',
+        prev: 'fa-chevron-left',
+        next: 'fa-chevron-right'
+      },
+      height: 'auto',
+      header: {
+        center: 'agendaWeek,agendaDay title',
+        left: 'myCustomButton'
 
-            }, // buttons for switching between views
-            defaultView: 'agendaWeek',
-            customButtons: {
-                myCustomButton: {
-                    text: 'custom!',
-                    click: function () {
-                        alert('clicked the custom button!');
-                    }
-                }
-            },
+      }, // buttons for switching between views
+      defaultView: 'agendaWeek',
+      customButtons: {
+        myCustomButton: {
+          text: 'custom!',
+          click: function () {
+            alert('clicked the custom button!');
+          }
+        }
+      },
 
-            // slotLabelInterval: "00:30",
+      // slotLabelInterval: "00:30",
 
-            selectable: true,
-            selectHelper: true,
-            nowIndicator: true,
-
-
+      selectable: true,
+      selectHelper: true,
+      nowIndicator: true,
 
 
+      events: 'http://localhost:8080/api/reservation/list',
+      // eventRender: function(event, element) {
+      //   if (event.room === ' ') {
+      //     element.attr('style', "");
+      //   }
+      //
+      // },
 
-            events: 'https://fullcalendar.io/demo-events.json',
-            select: function(startDate, endDate, jsEvent, view, resource) {
-                alert('selected ' + startDate.format() + ' to ' + endDate.format());
-            }
-        });
-
-        var calendar = $('#calendar').fullCalendar('getCalendar');
-
-        calendar.on('dayClick', function (date, jsEvent, view) {
-            console.log('clicked on ' + date.format());
-        });
-
+      select: function (startDate, endDate, jsEvent, view, resource) {
+        alert('selected ' + startDate.format() + ' to ' + endDate.format());
+      }
     });
 
+    var calendar = $('#calendar').fullCalendar('getCalendar');
 
-    function log(date, jsEvent, view) {
-        console.log('clicked on ' + date.format());
-    }
+    calendar.on('dayClick', function (date, jsEvent, view) {
+      console.log('clicked on ' + date.format());
+    });
 
-    // function getSelectBoxOptions(returnData) {
-    //   $.ajax(
-    //     {
-    //       url : "/api/v1/sacategoryproperty/selectboxes",
-    //       type: "GET",
-    //       success: function(data, textStatus, jqXHR) {
-    //         returnData(data);
-    //       },
-    //       error: function(jqXHR, textStatus, errorThrown) {
-    //         alert("초기 데이터 로딩에 실패하였습니다.");
-    //       }
-    //     }
-    //   );
-    // }
+  });
+
+
+  function log(date, jsEvent, view) {
+    console.log('clicked on ' + date.format());
+  }
+
+  // function getSelectBoxOptions(returnData) {
+  //   $.ajax(
+  //     {
+  //       url : "/api/v1/sacategoryproperty/selectboxes",
+  //       type: "GET",
+  //       success: function(data, textStatus, jqXHR) {
+  //         returnData(data);
+  //       },
+  //       error: function(jqXHR, textStatus, errorThrown) {
+  //         alert("초기 데이터 로딩에 실패하였습니다.");
+  //       }
+  //     }
+  //   );
+  // }
 
 </script>

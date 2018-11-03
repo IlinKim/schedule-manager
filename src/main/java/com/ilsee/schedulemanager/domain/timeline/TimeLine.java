@@ -12,8 +12,8 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "time_lines")
 @ToString
-@EqualsAndHashCode(of = "id", callSuper = true)
-public class TimeLine extends CreateModifyEntity {
+@EqualsAndHashCode(of = "id")
+public class TimeLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

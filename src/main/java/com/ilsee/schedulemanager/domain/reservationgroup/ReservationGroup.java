@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -23,5 +24,5 @@ public class ReservationGroup extends CreateModifyEntity {
 
     @OneToMany
     @JoinColumn(name = "reservation_group_id")
-    private List<Reservation> reservationList;
+    private Set<Reservation> reservationList;
 }
