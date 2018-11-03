@@ -19,4 +19,6 @@ public class Room extends CreateModifyEntity {
 
     private String roomName;
 
+    private String roomColor;
+
 }

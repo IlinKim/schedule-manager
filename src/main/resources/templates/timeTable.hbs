@@ -1,12 +1,57 @@
 <html>
-  {{> header}}
-  <body>
-    <div class="container">
-      <h2 style="color: blue">Conference Room Reservation</h2>
+{{> header}}
+<body>
+<div class="container">
+    <h2 style="color: blue">Conference Room Reservation</h2>
+</div>
+
+<div class="modal fade" id="reg-modal" tabindex="-1" role="dialog" aria-labelledby="reg-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reg-modalLabel">Reservation Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="reservationForm" action="/api/reservation/save" method="post">
+                <!--<form id="reservationForm" action="/action_page.php"  method="post">-->
+                    <div class="form-group">
+                        <label for="title" class="col-form-label">Title:</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userName" class="col-form-label">User:</label>
+                        <input type="text" class="form-control" id="userName" name="userName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomSelect" class="col-form-label">Room:</label>
+                        <select class="custom-select" id="roomSelect" name="roomId" required>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="datePicker" class="col-form-label">Date</label>
+                        <input id="datePicker" name="date" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        Start
+                        <input id="startTimePicker" name="start" type="text" required>
+                        End
+                        <input id="endTimePicker" name="end" type="text" required>
+                    </div>
+                    <button id="cancelReservation" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="saveReservation" type="button" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div id='calendar'></div>
+<div id='calendar'>
+</div>
 
-  </body>
-  {{> script}}
+
+</body>
+{{> script}}
 </html>

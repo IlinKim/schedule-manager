@@ -1,78 +1,156 @@
 <script>
-  $(function () {
-    // page is now ready, initialize the calendar...
+    $(function () {
+        // page is now ready, initialize the calendar...
 
-    $('#calendar').fullCalendar({
-      // put your options and callbacks here
-      themeSystem: 'bootstrap4',
-      //bootstrap4 테마사용시 버튼 이미지 셋팅
-      bootstrapFontAwesome: {
-        close: 'fa-times',
-        prev: 'fa-chevron-left',
-        next: 'fa-chevron-right'
-      },
-      height: 'auto',
-      header: {
-        center: 'agendaWeek,agendaDay title',
-        left: 'myCustomButton'
+        $('#calendar').fullCalendar({
+            // put your options and callbacks here
+            themeSystem: 'bootstrap4',
+            //bootstrap4 테마사용시 버튼 이미지 셋팅
+            bootstrapFontAwesome: {
+                close: 'fa-times',
+                prev: 'fa-chevron-left',
+                next: 'fa-chevron-right'
+            },
+            height: 'auto',
+            header: {
+                center: 'agendaWeek,agendaDay title',
+                left: 'myCustomButton'
 
-      }, // buttons for switching between views
-      defaultView: 'agendaWeek',
-      customButtons: {
-        myCustomButton: {
-          text: 'custom!',
-          click: function () {
-            alert('clicked the custom button!');
-          }
+            }, // buttons for switching between views
+            defaultView: 'agendaWeek',
+            customButtons: {
+                myCustomButton: {
+                    text: 'custom!',
+                    click: function () {
+                        //clear input values
+                        $('#reservationForm').find("input[type=text], textarea").val("");
+                        $('#reg-modal').modal();
+                    }
+                }
+            },
+
+            selectable: true,
+            selectHelper: true,
+            nowIndicator: true,
+
+            events: 'http://localhost:8080/api/reservation/list',
+            // eventRender: function(event, element) {
+            //
+            // },
+
+            select: processSelect,
+            selectAllow: selectAllow
+
+
+        });
+
+        makeRoomComponent();
+
+        var calendar = $('#calendar').fullCalendar('getCalendar');
+
+
+        $('#datePicker').datetimepicker({
+            timepicker:false,
+            format:'Y-m-d'
+        });
+
+        var allowTimes = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30',
+            '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30',
+            '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30',
+            '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30',
+            '23:00', '23:30', '24:00'];
+        $('#startTimePicker').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            allowTimes: allowTimes,
+            defaultTime: '00:00'
+        });
+        $('#endTimePicker').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            allowTimes: allowTimes,
+            defaultTime: '00:00'
+        });
+
+        // $.datetimepicker.setDateFormatter('moment');
+
+        calendar.on('dayClick', function (date, jsEvent, view) {
+            console.log('clicked on ' + date.format());
+        });
+
+    });
+
+
+    function log(date, jsEvent, view) {
+        console.log('clicked on ' + date.format());
+    }
+
+    function selectAllow(selectInfo) {
+        if (selectInfo.start.date() != selectInfo.end.date()) {
+            return false;
         }
-      },
+    }
 
-      // slotLabelInterval: "00:30",
+    function processSelect(startDate, endDate, jsEvent, view, resource) {
+        //clear input values
+        $('#reservationForm').find("input[type=text], textarea").val("");
 
-      selectable: true,
-      selectHelper: true,
-      nowIndicator: true,
+        var date = startDate.format('YYYY-MM-DD');
+        var startTime = startDate.format('hh:mm');
+        var endTime = endDate.format('hh:mm');
 
+        $('#datePicker').val(date);
+        $('#startTimePicker').val(startTime);
+        $('#endTimePicker').val(endTime);
 
-      events: 'http://localhost:8080/api/reservation/list',
-      // eventRender: function(event, element) {
-      //   if (event.room === ' ') {
-      //     element.attr('style', "");
-      //   }
-      //
-      // },
+        $('#reg-modal').modal();
+    }
 
-      select: function (startDate, endDate, jsEvent, view, resource) {
-        alert('selected ' + startDate.format() + ' to ' + endDate.format());
-      }
+    function makeRoomComponent() {
+        function makeRoomSelectOptions(data) {
+            $.each(data, function (i, room) {
+                $('#roomSelect').append($('<option>', {
+                    value: room.id,
+                    text: room.roomName
+                }));
+            });
+        }
+
+        $.ajax({
+            url: 'http://localhost:8080/api/room/list',
+            type: 'GET',
+            success: function (data, textStatus, jqXHR) {
+                makeRoomSelectOptions(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.notify('Failed to load all rooms\n' + 'Error Code:' + jqXHR.status, 'warn');
+            }
+        });
+    }
+
+    $('#saveReservation').bind('click', function () {
+        //TODO: time range validation, minute validation
+        var start = $('#startTimePicker').val();
+        var end = $('#endTimePicker').val();
+        console.log(start);
+        console.log(end.valueOf());
+
+        $('#reservationForm').submit();
     });
 
-    var calendar = $('#calendar').fullCalendar('getCalendar');
+    // $.ajax(
+    //         {
+    //             url: "/api/v1/sacategoryproperty/selectboxes",
+    //             data: JSON.stringify(data),
+    //             type: 'POST',
+    //             success: function (data, textStatus, jqXHR) {
+    //                 $.notify('selected ' + startDate.format() + ' to ' + endDate.format(), 'success');
+    //             },
+    //             error: function (jqXHR, textStatus, errorThrown) {
+    //                 alert("초기 데이터 로딩에 실패하였습니다.");
+    //             }
+    //         }
+    // );
 
-    calendar.on('dayClick', function (date, jsEvent, view) {
-      console.log('clicked on ' + date.format());
-    });
-
-  });
-
-
-  function log(date, jsEvent, view) {
-    console.log('clicked on ' + date.format());
-  }
-
-  // function getSelectBoxOptions(returnData) {
-  //   $.ajax(
-  //     {
-  //       url : "/api/v1/sacategoryproperty/selectboxes",
-  //       type: "GET",
-  //       success: function(data, textStatus, jqXHR) {
-  //         returnData(data);
-  //       },
-  //       error: function(jqXHR, textStatus, errorThrown) {
-  //         alert("초기 데이터 로딩에 실패하였습니다.");
-  //       }
-  //     }
-  //   );
-  // }
 
 </script>

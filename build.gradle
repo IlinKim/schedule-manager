@@ -41,6 +41,7 @@ dependencies {
             'com.github.jknack:handlebars-markdown:4.0.7'
 
 	compile ('com.google.guava:guava:27.0-jre')
+    compile("org.modelmapper:modelmapper:2.3.0")
 
 }
 
