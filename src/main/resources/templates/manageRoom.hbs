@@ -1,0 +1,70 @@
+<html>
+{{> header}}
+<body>
+{{> nav}}
+<div class="container">
+    <div id='calendar'>
+        <form id="reservationForm">
+            <!--<form id="reservationForm" action="/action_page.php"  method="post">-->
+            <div class="form-group">
+                <label for="title" class="col-form-label">Title:</label>
+                <input type="text" class="form-control" id="title" name="title" >
+            </div>
+            <div class="form-group">
+                <label for="userName" class="col-form-label">User:</label>
+                <input type="text" class="form-control" id="userName" name="userName" >
+            </div>
+            <div class="form-group">
+                <label for="roomSelect" class="col-form-label">Room:</label>
+                <select class="custom-select" id="roomSelect" name="roomId" >
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="datePicker" class="col-form-label">Date</label>
+                <input id="datePicker" name="date" type="text" >
+            </div>
+            <div class="form-group">
+                Start
+                <input id="startTimePicker" name="start" type="text" >
+                End
+                <input id="endTimePicker" name="end" type="text" >
+            </div>
+            <div class="form-group">
+                <label for="repeatCount" class="col-form-label">RepeatCount:</label>
+                <input type="number" class="form-control" id="repeatCount" name="repeatCount" min="1" max="10" >
+            </div>
+            <button id="cancelReservation" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="saveReservation" type="button" class="btn btn-primary">Save</button>
+            <h4 id="result_validation" style="color: forestgreen"></h4>
+        </form>
+    </div>
+
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">RoomName</th>
+            <th scope="col">Color</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each roomList}}
+        <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+
+</div>
+
+
+
+
+</body>
+{{> manageRoomScript}}
+</html>

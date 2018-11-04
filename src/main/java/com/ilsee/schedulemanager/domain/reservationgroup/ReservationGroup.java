@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -20,9 +19,13 @@ public class ReservationGroup extends CreateModifyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer repeatCount;
-
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "reservation_group_id")
     private Set<Reservation> reservationList;
+
+    public static ReservationGroup of(Set<Reservation> reservationList) {
+        ReservationGroup group = new ReservationGroup();
+        group.setReservationList(reservationList);
+        return group;
+    }
 }

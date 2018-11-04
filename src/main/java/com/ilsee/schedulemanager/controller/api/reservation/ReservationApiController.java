@@ -1,20 +1,23 @@
 package com.ilsee.schedulemanager.controller.api.reservation;
 
-import com.google.common.collect.Iterables;
+import com.ilsee.schedulemanager.controller.converter.ReservationGroupConverter;
+import com.ilsee.schedulemanager.controller.converter.ReservationResponseDtoConverter;
+import com.ilsee.schedulemanager.domain.exception.ValidationErrors;
+import com.ilsee.schedulemanager.domain.exception.ValidationException;
 import com.ilsee.schedulemanager.domain.reservationgroup.ReservationGroup;
-import com.ilsee.schedulemanager.domain.reservationgroup.ReservationGroupRepository;
 import com.ilsee.schedulemanager.domain.reservationgroup.ReservationGroupService;
+import com.ilsee.schedulemanager.domain.validator.ReservationRequestDateValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -22,46 +25,34 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 public class ReservationApiController {
-    Function<ReservationGroup, List<ReservationResponseDto>> roomReservationDtoConverter = (reservationGroup) -> reservationGroup.getReservationList()
-            .stream()
-            .map(reservation -> {
-                String roomName = reservation.getReservationCellList().get(0).getRoom().getRoomName();
-                String color = reservation.getReservationCellList().get(0).getRoom().getRoomColor();
-                LocalDate date = reservation.getReservationCellList().get(0).getDate();
-                LocalTime start = reservation.getReservationCellList().get(0).getTimeLine().getStart();
-                LocalTime end = Iterables.getLast(reservation.getReservationCellList()).getTimeLine().getEnd();
-
-                return ReservationResponseDto.builder()
-                        .id(reservationGroup.getId())
-                        .title(reservation.getTitle())
-                        .roomName(roomName)
-                        .color(color)
-                        .start(LocalDateTime.of(date, start))
-                        .end(LocalDateTime.of(date, end))
-                        .build();
-            }).collect(Collectors.toList());
-
     private final ReservationGroupService reservationGroupService;
-    private final ReservationGroupRepository reservationGroupRepository;
-
-    @GetMapping("test")
-    public List<String> test() {
-        List<ReservationGroup> collect = reservationGroupRepository.findAll();
-        return null;
-    }
+    private final ReservationResponseDtoConverter reservationResponseDtoConverter;
+    private final ReservationGroupConverter reservationGroupConverter;
+    private final ReservationRequestDateValidator reservationRequestDateValidator;
 
     @GetMapping("list")
     public List<ReservationResponseDto> listAllReservations(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
                                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         List<ReservationGroup> allReservationGroups = reservationGroupService.getAllReservationGroups(start.toLocalDate(), end.toLocalDate());
-        return allReservationGroups.stream()
-                .map(roomReservationDtoConverter)
+        List<ReservationResponseDto> collect = allReservationGroups.stream()
+                .map(reservationResponseDtoConverter)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+        return collect;
     }
 
     @PostMapping("save")
-    public void saveReservation(ReservationRequestDto reservationRequestDto) {
-        log.info("############ save!!!");
+    public void saveReservation(@Valid @RequestBody ReservationRequestDto reservationRequestDto, BindingResult bindingResult) {
+        log.info("############ save!!! {}", reservationRequestDto);
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException(ValidationErrors.COMMON);
+        }
+        reservationGroupService.saveReservation(reservationGroupConverter.apply(reservationRequestDto));
     }
+
+    @InitBinder("reservationRequestDto")
+    public void setupBinder(WebDataBinder binder) {
+        binder.addValidators(reservationRequestDateValidator);
+    }
+
 }

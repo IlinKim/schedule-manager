@@ -17,7 +17,6 @@ public class RoomApiController {
 
     @GetMapping("list")
     public List<RoomDto> listAllRooms() {
-        List<RoomDto> convert = ModelUtils.convert(roomService.getAllRooms(), RoomDto.class);
-        return convert;
+        return ModelUtils.convert(roomService.getAllRooms(), RoomDto.class);
     }
 }

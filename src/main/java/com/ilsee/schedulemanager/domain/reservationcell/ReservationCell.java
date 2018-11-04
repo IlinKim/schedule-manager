@@ -29,4 +29,12 @@ public class ReservationCell extends CreateModifyEntity {
 	@ManyToOne
 	@JoinColumn(name = "time_line_id", nullable = false)
 	private TimeLine timeLine;
+
+    public static ReservationCell of(Room room, LocalDate date, TimeLine timeLine) {
+        ReservationCell cell = new ReservationCell();
+        cell.setRoom(room);
+        cell.setDate(date);
+        cell.setTimeLine(timeLine);
+        return cell;
+    }
 }

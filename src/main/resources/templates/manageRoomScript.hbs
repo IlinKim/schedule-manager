@@ -1,0 +1,62 @@
+<script>
+    $(function () {
+
+
+        calendar.on('dayClick', function (date, jsEvent, view) {
+            console.log('clicked on ' + date.format());
+        });
+
+    });
+
+
+    $('#saveReservation').bind('click', function () {
+        var title = $('#title').val();
+        var userName = $('#userName').val();
+        var roomId = $('#roomSelect').val();
+        var date = $('#datePicker').val();
+        var startTime = $('#startTimePicker').val();
+        var endTime = $('#endTimePicker').val();
+        var repeatCount = $('#repeatCount').val();
+
+        //TODO: time range validation, minute validation
+        console.log(startTime);
+        console.log(endTime.valueOf());
+
+
+
+        // if () {
+        //     $('#result_validation').text('신규 저장되었습니다.');
+        //     window.setTimeout(function () {
+        //         $('#result_regist_member').text('')
+        //     }, 2000);
+        // }
+
+        var data = {
+            title: title,
+            userName: userName,
+            roomId: roomId,
+            date: date,
+            startTime: startTime,
+            endTime: endTime,
+            repeatCount: repeatCount
+        };
+
+        'input[type="text"],input[type="password"]'
+        $.ajax({
+            url: "/api/reservation/save",
+            data: JSON.stringify(data),
+            type: 'POST',
+            contentType: "application/json; charset=UTF-8",
+            success: function (data, textStatus, jqXHR) {
+                $.notify('Reservation Success.', 'info');
+                $('#reg-modal').modal('hide');
+                $('#reservationForm').find("input[type=text],input[type=number]").val("");
+                $('#calendar').fullCalendar('refetchEvents');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.notify('Reservation Failed: ' + jqXHR.responseText, 'warn');
+            }
+        });
+    });
+
+</script>

@@ -1,8 +1,10 @@
 <html>
 {{> header}}
 <body>
+{{> nav}}
 <div class="container">
-    <h2 style="color: blue">Conference Room Reservation</h2>
+    <div id='calendar'>
+    </div>
 </div>
 
 <div class="modal fade" id="reg-modal" tabindex="-1" role="dialog" aria-labelledby="reg-modalLabel" aria-hidden="true">
@@ -15,43 +17,45 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="reservationForm" action="/api/reservation/save" method="post">
+                <form id="reservationForm">
                 <!--<form id="reservationForm" action="/action_page.php"  method="post">-->
                     <div class="form-group">
                         <label for="title" class="col-form-label">Title:</label>
-                        <input type="text" class="form-control" id="title" name="title" required>
+                        <input type="text" class="form-control" id="title" name="title" >
                     </div>
                     <div class="form-group">
                         <label for="userName" class="col-form-label">User:</label>
-                        <input type="text" class="form-control" id="userName" name="userName" required>
+                        <input type="text" class="form-control" id="userName" name="userName" >
                     </div>
                     <div class="form-group">
                         <label for="roomSelect" class="col-form-label">Room:</label>
-                        <select class="custom-select" id="roomSelect" name="roomId" required>
+                        <select class="custom-select" id="roomSelect" name="roomId" >
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="datePicker" class="col-form-label">Date</label>
-                        <input id="datePicker" name="date" type="text" required>
+                        <input id="datePicker" name="date" type="text" >
                     </div>
                     <div class="form-group">
                         Start
-                        <input id="startTimePicker" name="start" type="text" required>
+                        <input id="startTimePicker" name="start" type="text" >
                         End
-                        <input id="endTimePicker" name="end" type="text" required>
+                        <input id="endTimePicker" name="end" type="text" >
+                    </div>
+                    <div class="form-group">
+                        <label for="repeatCount" class="col-form-label">RepeatCount:</label>
+                        <input type="number" class="form-control" id="repeatCount" name="repeatCount" min="1" max="10" >
                     </div>
                     <button id="cancelReservation" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button id="saveReservation" type="button" class="btn btn-primary">Save</button>
+                    <h4 id="result_validation" style="color: forestgreen"></h4>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<div id='calendar'>
-</div>
-
 
 </body>
-{{> script}}
+{{> reservationScript}}
 </html>
