@@ -9,9 +9,11 @@ import java.time.LocalTime;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DateTimeUtils {
+    private static final int REPEAT_INTERVAL_DAY = 7;
+    private static final LocalTime ZERO_TIME = LocalTime.of(0, 0);
 
     public static boolean isZeroTime(LocalTime time) {
-        return time.equals(LocalTime.of(0, 0));
+        return time.equals(ZERO_TIME);
     }
 
     public static LocalDateTime convert(LocalDate date, LocalTime time) {
@@ -19,14 +21,14 @@ public class DateTimeUtils {
     }
 
     public static LocalDateTime convertEndTime(LocalDate date, LocalTime endTime) {
-        if (endTime.equals(LocalTime.of(0,0))) {
+        if (endTime.equals(ZERO_TIME)) {
             return convert(date.plusDays(1), endTime);
         }
         return convert(date, endTime);
     }
 
     public static LocalDate getIntervalDateByIndex(LocalDate date, int index) {
-        Integer addDays = 7 * index;
+        Integer addDays = REPEAT_INTERVAL_DAY * index;
         return date.plusDays(addDays);
     }
 }

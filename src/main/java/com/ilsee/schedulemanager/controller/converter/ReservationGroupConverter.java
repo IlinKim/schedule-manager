@@ -20,7 +20,6 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Component
@@ -57,16 +56,17 @@ public class ReservationGroupConverter implements Function<ReservationRequestDto
         LocalTime endTime = reservationRequestDto.getEndTime();
 
         Room room = roomRepository.findById(roomId).orElseThrow(() -> new ValidationException(ValidationErrors.INVALID_ROOM));
-        List<TimeLine> timeLines = timeLineRepository.findAllByStartGreaterThanEqualAndEndLessThanEqual(startTime, endTime);
 
-        return timeLines.stream()
-                .filter(filterLastTimeLineWhenNotIncludeLastEnd(endTime))
-                .map(timeLine -> ReservationCell.of(room, date, timeLine))
-                .collect(Collectors.toList());
-    }
-
-    private Predicate<TimeLine> filterLastTimeLineWhenNotIncludeLastEnd(LocalTime endTime) {
-        return timeLine -> isNotLastTimeLine(timeLine) || isLastTime(endTime);
+        if(isLastTime(endTime)) {
+            return timeLineRepository.findAllByStartGreaterThanEqual(startTime).stream()
+                    .map(timeLine -> ReservationCell.of(room, date, timeLine))
+                    .collect(Collectors.toList());
+        } else {
+            return timeLineRepository.findAllByStartGreaterThanEqualAndEndLessThanEqual(startTime, endTime).stream()
+                    .filter(this::isNotLastTimeLine)
+                    .map(timeLine -> ReservationCell.of(room, date, timeLine))
+                    .collect(Collectors.toList());
+        }
     }
 
     private boolean isLastTime(LocalTime endTime) {

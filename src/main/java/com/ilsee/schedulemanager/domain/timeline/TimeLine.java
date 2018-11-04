@@ -1,6 +1,5 @@
 package com.ilsee.schedulemanager.domain.timeline;
 
-import com.ilsee.schedulemanager.domain.support.entity.CreateModifyEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
