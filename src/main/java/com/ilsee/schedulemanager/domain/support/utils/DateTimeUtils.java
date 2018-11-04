@@ -24,4 +24,9 @@ public class DateTimeUtils {
         }
         return convert(date, endTime);
     }
+
+    public static LocalDate getIntervalDateByIndex(LocalDate date, int index) {
+        Integer addDays = 7 * index;
+        return date.plusDays(addDays);
+    }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "reservations")
 @ToString
-@EqualsAndHashCode(of = "id", callSuper = true)
+@EqualsAndHashCode(of = "reservationCellList", callSuper = true)
 public class Reservation extends CreateModifyEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

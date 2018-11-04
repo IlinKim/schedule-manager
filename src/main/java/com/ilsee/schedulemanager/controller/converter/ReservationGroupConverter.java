@@ -44,15 +44,17 @@ public class ReservationGroupConverter implements Function<ReservationRequestDto
         String title = reservationRequestDto.getTitle();
         String userName = reservationRequestDto.getUserName();
 
-        for (int i = 0; i < reservationRequestDto.getRepeatCount(); i++) {
-            resultSet.add(Reservation.of(title, userName, makeReservationCells(reservationRequestDto)));
+        for (int index = 0; index < reservationRequestDto.getRepeatCount(); index++) {
+            List<ReservationCell> b = makeReservationCells(reservationRequestDto, index);
+            Reservation a = Reservation.of(title, userName, b);
+            resultSet.add(a);
         }
         return resultSet;
     }
 
-    private List<ReservationCell> makeReservationCells(ReservationRequestDto reservationRequestDto) {
+    private List<ReservationCell> makeReservationCells(ReservationRequestDto reservationRequestDto, int index) {
         Long roomId = reservationRequestDto.getRoomId();
-        LocalDate date = reservationRequestDto.getDate();
+        LocalDate date = DateTimeUtils.getIntervalDateByIndex(reservationRequestDto.getDate(), index);
         LocalTime startTime = reservationRequestDto.getStartTime();
         LocalTime endTime = reservationRequestDto.getEndTime();
 

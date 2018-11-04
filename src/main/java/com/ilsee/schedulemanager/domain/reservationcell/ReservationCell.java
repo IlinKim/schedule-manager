@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "reservation_cells", uniqueConstraints = @UniqueConstraint(name = "reservation_cell_uk_01", columnNames = {"room_id", "date", "time_line_id"}))
 @ToString
-@EqualsAndHashCode(of = "id", callSuper = true)
+@EqualsAndHashCode(of = {"room_id", "date", "timeLine"}, callSuper = true)
 public class ReservationCell extends CreateModifyEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

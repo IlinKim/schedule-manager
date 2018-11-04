@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -20,6 +21,8 @@ public class ReservationResponseDtoConverter implements Function<ReservationGrou
         return reservationGroup.getReservationList()
                 .stream()
                 .map(reservation -> {
+                    reservation.getReservationCellList().sort(Comparator.comparing(ReservationCell::getId));
+
                     ReservationCell firstReservationCell = reservation.getReservationCellList().get(0);
                     ReservationCell lastReservationCell = Iterables.getLast(reservation.getReservationCellList());
 

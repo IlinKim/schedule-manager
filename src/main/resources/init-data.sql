@@ -1,7 +1,7 @@
 INSERT INTO rooms (id, created_at, updated_at, room_name, room_color) VALUES (1, now(), now(), '회의실1', '#c72525');
 INSERT INTO rooms (id, created_at, updated_at, room_name, room_color) VALUES (2, now(), now(), '회의실2', '#634e4e');
-INSERT INTO rooms (id, created_at, updated_at, room_name, room_color) VALUES (3, now(), now(), '회의실3', '#634e4e');
-INSERT INTO rooms (id, created_at, updated_at, room_name, room_color) VALUES (4, now(), now(), '회의실4', '#634e4e');
+INSERT INTO rooms (id, created_at, updated_at, room_name, room_color) VALUES (3, now(), now(), '회의실3', '#262E89');
+INSERT INTO rooms (id, created_at, updated_at, room_name, room_color) VALUES (4, now(), now(), '회의실4', '#696C85');
 
 INSERT INTO time_lines (id, start, end) VALUES (1, '00:00:00', '00:30:00');
 INSERT INTO time_lines (id, start, end) VALUES (2, '00:30:00', '01:00:00');
