@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ValidationErrors {
-    COMMON("Invalid Input"),
+    COMMON("Please Check Input"),
     INVALID_ROOM("Invalid Room"),
     INVALID_DATE("Invalid Date");
 

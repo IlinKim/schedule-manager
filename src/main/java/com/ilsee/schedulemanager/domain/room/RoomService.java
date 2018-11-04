@@ -15,4 +15,9 @@ public class RoomService {
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
     }
+
+    @Transactional
+    public void save(Room room) {
+        roomRepository.save(room);
+    }
 }

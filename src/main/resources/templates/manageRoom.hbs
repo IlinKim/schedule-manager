@@ -4,43 +4,24 @@
 {{> nav}}
 <div class="container">
     <div id='calendar'>
-        <form id="reservationForm">
+        <form id="roomForm">
             <!--<form id="reservationForm" action="/action_page.php"  method="post">-->
             <div class="form-group">
-                <label for="title" class="col-form-label">Title:</label>
-                <input type="text" class="form-control" id="title" name="title" >
+                <label for="roomName" class="col-form-label">Room Name:</label>
+                <input type="text" class="form-control" id="roomName" name="roomName" >
             </div>
             <div class="form-group">
-                <label for="userName" class="col-form-label">User:</label>
-                <input type="text" class="form-control" id="userName" name="userName" >
+                <label for="colorPicker" class="col-form-label">Color:</label>
+                <input type="text" class="form-control" id="colorPicker" name="colorPicker" >
             </div>
-            <div class="form-group">
-                <label for="roomSelect" class="col-form-label">Room:</label>
-                <select class="custom-select" id="roomSelect" name="roomId" >
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="datePicker" class="col-form-label">Date</label>
-                <input id="datePicker" name="date" type="text" >
-            </div>
-            <div class="form-group">
-                Start
-                <input id="startTimePicker" name="start" type="text" >
-                End
-                <input id="endTimePicker" name="end" type="text" >
-            </div>
-            <div class="form-group">
-                <label for="repeatCount" class="col-form-label">RepeatCount:</label>
-                <input type="number" class="form-control" id="repeatCount" name="repeatCount" min="1" max="10" >
-            </div>
-            <button id="cancelReservation" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button id="saveReservation" type="button" class="btn btn-primary">Save</button>
+            <input type="text" id="roomColor" hidden/>
+            <button id="saveRoom" type="button" class="btn btn-primary">Save</button>
             <h4 id="result_validation" style="color: forestgreen"></h4>
         </form>
     </div>
 
 
-    <table class="table">
+    <table id="room_table" class="table">
         <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
@@ -49,14 +30,7 @@
         </tr>
         </thead>
         <tbody>
-        {{#each roomList}}
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        {{/each}}
+
         </tbody>
     </table>
 

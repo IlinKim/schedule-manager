@@ -1,62 +1,89 @@
 <script>
     $(function () {
 
+        loadAllRooms();
 
-        calendar.on('dayClick', function (date, jsEvent, view) {
-            console.log('clicked on ' + date.format());
+        var pickr = Pickr.create({
+            el: '#colorPicker',
+            components: {
+                // Main components
+                preview: true,
+                opacity: true,
+                hue: true,
+
+                // Input / output Options
+                interaction: {
+                    hex: true,
+                    rgba: false,
+                    hsla: false,
+                    hsva: false,
+                    cmyk: false,
+                    input: true,
+                    clear: true,
+                    save: true
+                }
+            },
+
+            onSave(hsva, instance) {
+                // same as onChange
+                var color = hsva.toHEX().toString();
+                $('#roomColor').val(color);
+            }
         });
+
+        pickr.setColor('#42445A')
 
     });
 
 
-    $('#saveReservation').bind('click', function () {
-        var title = $('#title').val();
-        var userName = $('#userName').val();
-        var roomId = $('#roomSelect').val();
-        var date = $('#datePicker').val();
-        var startTime = $('#startTimePicker').val();
-        var endTime = $('#endTimePicker').val();
-        var repeatCount = $('#repeatCount').val();
-
-        //TODO: time range validation, minute validation
-        console.log(startTime);
-        console.log(endTime.valueOf());
-
-
-
-        // if () {
-        //     $('#result_validation').text('신규 저장되었습니다.');
-        //     window.setTimeout(function () {
-        //         $('#result_regist_member').text('')
-        //     }, 2000);
-        // }
+    $('#saveRoom').bind('click', function () {
+        var roomName = $('#roomName').val();
+        var roomColor = $('#roomColor').val();
 
         var data = {
-            title: title,
-            userName: userName,
-            roomId: roomId,
-            date: date,
-            startTime: startTime,
-            endTime: endTime,
-            repeatCount: repeatCount
+            roomName: roomName,
+            roomColor: roomColor
         };
 
-        'input[type="text"],input[type="password"]'
         $.ajax({
-            url: "/api/reservation/save",
+            url: "/api/room/save",
             data: JSON.stringify(data),
             type: 'POST',
             contentType: "application/json; charset=UTF-8",
             success: function (data, textStatus, jqXHR) {
-                $.notify('Reservation Success.', 'info');
-                $('#reg-modal').modal('hide');
-                $('#reservationForm').find("input[type=text],input[type=number]").val("");
-                $('#calendar').fullCalendar('refetchEvents');
+                $.notify('Room Save Success.', 'info');
+                $('#roomName').val("");
+                loadAllRooms();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                $.notify('Reservation Failed: ' + jqXHR.responseText, 'warn');
+                $.notify('Room Save Failed: ' + jqXHR.responseText, 'warn');
+                loadAllRooms();
             }
         });
     });
+
+    function loadAllRooms() {
+        var roomTableBody = $('#room_table tbody');
+        roomTableBody.html('');
+
+        $.ajax({
+            url: '/api/room/list',
+            type: 'GET',
+            success: function (data) {
+
+                $.each(data, function (index, value) {
+                    console.log(value);
+                    roomTableBody.append(
+                            $('<tr>').append($('<td>').html(value.id))
+                                    .append($('<td>').html(value.roomName))
+                                    .append($('<td>').html(value.roomColor))
+                    );
+                });
+            },
+            error: function () {
+                alert('Room 조회중 에러가 발생했습니다');
+            }
+        });
+    }
 
 </script>
