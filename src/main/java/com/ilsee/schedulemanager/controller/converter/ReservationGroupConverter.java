@@ -45,9 +45,7 @@ public class ReservationGroupConverter implements Function<ReservationRequestDto
         String userName = reservationRequestDto.getUserName();
 
         for (int index = 0; index < reservationRequestDto.getRepeatCount(); index++) {
-            List<ReservationCell> b = makeReservationCells(reservationRequestDto, index);
-            Reservation a = Reservation.of(title, userName, b);
-            resultSet.add(a);
+            resultSet.add(Reservation.of(title, userName, makeReservationCells(reservationRequestDto, index)));
         }
         return resultSet;
     }

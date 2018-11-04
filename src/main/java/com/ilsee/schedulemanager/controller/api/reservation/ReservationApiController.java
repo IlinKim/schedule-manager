@@ -34,11 +34,10 @@ public class ReservationApiController {
     public List<ReservationResponseDto> listAllReservations(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
                                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         List<ReservationGroup> allReservationGroups = reservationGroupService.getAllReservationGroups(start.toLocalDate(), end.toLocalDate());
-        List<ReservationResponseDto> collect = allReservationGroups.stream()
+        return allReservationGroups.stream()
                 .map(reservationResponseDtoConverter)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        return collect;
     }
 
     @PostMapping("save")
