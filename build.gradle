@@ -44,7 +44,7 @@ dependencies {
 	compile ('com.google.guava:guava:27.0-jre')
     compile("org.modelmapper:modelmapper:2.3.0")
 
-    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.5.1', ext: 'pom'
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.5.1'
     testCompile group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4'
 }
 
