@@ -1,13 +1,15 @@
 package com.ilsee.schedulemanager.domain.validator
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
 class ReservationDateTimeCheckerTest extends Specification {
-    def "예약 start 시간과 end 시간 check"() {
+    @Unroll
+    def "예약 start 시간과 end 시간 check: #DESC"() {
         setup:
         def startTime = START
         def endTime = END
