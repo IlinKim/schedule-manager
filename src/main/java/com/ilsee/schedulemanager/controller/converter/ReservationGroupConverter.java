@@ -25,55 +25,55 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class ReservationGroupConverter implements Function<ReservationRequestDto, ReservationGroup> {
-    private final RoomRepository roomRepository;
-    private final TimeLineRepository timeLineRepository;
+	private final RoomRepository roomRepository;
+	private final TimeLineRepository timeLineRepository;
 
-    @Override
-    public ReservationGroup apply(ReservationRequestDto reservationRequestDto) {
-        return makeReservationGroup(reservationRequestDto);
-    }
+	@Override
+	public ReservationGroup apply(ReservationRequestDto reservationRequestDto) {
+		return makeReservationGroup(reservationRequestDto);
+	}
 
-    private ReservationGroup makeReservationGroup(ReservationRequestDto reservationRequestDto) {
-        return ReservationGroup.of(makeReservations(reservationRequestDto));
-    }
+	private ReservationGroup makeReservationGroup(ReservationRequestDto reservationRequestDto) {
+		return ReservationGroup.of(makeReservations(reservationRequestDto));
+	}
 
-    private Set<Reservation> makeReservations(ReservationRequestDto reservationRequestDto) {
-        Set<Reservation> resultSet = Sets.newHashSet();
+	private Set<Reservation> makeReservations(ReservationRequestDto reservationRequestDto) {
+		Set<Reservation> resultSet = Sets.newHashSet();
 
-        String title = reservationRequestDto.getTitle();
-        String userName = reservationRequestDto.getUserName();
+		String title = reservationRequestDto.getTitle();
+		String userName = reservationRequestDto.getUserName();
 
-        for (int index = 0; index < reservationRequestDto.getRepeatCount(); index++) {
-            resultSet.add(Reservation.of(title, userName, makeReservationCells(reservationRequestDto, index)));
-        }
-        return resultSet;
-    }
+		for (int index = 0; index < reservationRequestDto.getRepeatCount(); index++) {
+			resultSet.add(Reservation.of(title, userName, makeReservationCells(reservationRequestDto, index)));
+		}
+		return resultSet;
+	}
 
-    private List<ReservationCell> makeReservationCells(ReservationRequestDto reservationRequestDto, int index) {
-        Long roomId = reservationRequestDto.getRoomId();
-        LocalDate date = DateTimeUtils.getIntervalDateByIndex(reservationRequestDto.getDate(), index);
-        LocalTime startTime = reservationRequestDto.getStartTime();
-        LocalTime endTime = reservationRequestDto.getEndTime();
+	private List<ReservationCell> makeReservationCells(ReservationRequestDto reservationRequestDto, int index) {
+		Long roomId = reservationRequestDto.getRoomId();
+		LocalDate date = DateTimeUtils.getIntervalDateByIndex(reservationRequestDto.getDate(), index);
+		LocalTime startTime = reservationRequestDto.getStartTime();
+		LocalTime endTime = reservationRequestDto.getEndTime();
 
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> new ValidationException(ValidationErrors.INVALID_ROOM));
+		Room room = roomRepository.findById(roomId).orElseThrow(() -> new ValidationException(ValidationErrors.INVALID_ROOM));
 
-        if(isLastTime(endTime)) {
-            return timeLineRepository.findAllByStartGreaterThanEqual(startTime).stream()
-                    .map(timeLine -> ReservationCell.of(room, date, timeLine))
-                    .collect(Collectors.toList());
-        } else {
-            return timeLineRepository.findAllByStartGreaterThanEqualAndEndLessThanEqual(startTime, endTime).stream()
-                    .filter(this::isNotLastTimeLine)
-                    .map(timeLine -> ReservationCell.of(room, date, timeLine))
-                    .collect(Collectors.toList());
-        }
-    }
+		if (isLastTime(endTime)) {
+			return timeLineRepository.findAllByStartGreaterThanEqual(startTime).stream()
+				.map(timeLine -> ReservationCell.of(room, date, timeLine))
+				.collect(Collectors.toList());
+		}
+		return timeLineRepository.findAllByStartGreaterThanEqualAndEndLessThanEqual(startTime, endTime).stream()
+			.filter(this::isNotLastTimeLine)
+			.map(timeLine -> ReservationCell.of(room, date, timeLine))
+			.collect(Collectors.toList());
 
-    private boolean isLastTime(LocalTime endTime) {
-        return DateTimeUtils.isZeroTime(endTime);
-    }
+	}
 
-    private boolean isNotLastTimeLine(TimeLine timeLine) {
-        return !DateTimeUtils.isZeroTime(timeLine.getEnd());
-    }
+	private boolean isLastTime(LocalTime endTime) {
+		return DateTimeUtils.isZeroTime(endTime);
+	}
+
+	private boolean isNotLastTimeLine(TimeLine timeLine) {
+		return !DateTimeUtils.isZeroTime(timeLine.getEnd());
+	}
 }

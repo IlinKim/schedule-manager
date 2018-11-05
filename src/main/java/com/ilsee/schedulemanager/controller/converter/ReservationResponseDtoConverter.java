@@ -2,6 +2,7 @@ package com.ilsee.schedulemanager.controller.converter;
 
 import com.google.common.collect.Iterables;
 import com.ilsee.schedulemanager.controller.api.reservation.ReservationResponseDto;
+import com.ilsee.schedulemanager.domain.reservation.Reservation;
 import com.ilsee.schedulemanager.domain.reservationcell.ReservationCell;
 import com.ilsee.schedulemanager.domain.reservationgroup.ReservationGroup;
 import com.ilsee.schedulemanager.domain.support.utils.DateTimeUtils;
@@ -20,26 +21,34 @@ public class ReservationResponseDtoConverter implements Function<ReservationGrou
     public List<ReservationResponseDto> apply(ReservationGroup reservationGroup) {
         return reservationGroup.getReservationList()
                 .stream()
-                .map(reservation -> {
-                    reservation.getReservationCellList().sort(Comparator.comparing(ReservationCell::getId));
+                .peek(this::sortReservationCell)
+                .map(convert(reservationGroup))
+            .collect(Collectors.toList());
+    }
 
-                    ReservationCell firstReservationCell = reservation.getReservationCellList().get(0);
-                    ReservationCell lastReservationCell = Iterables.getLast(reservation.getReservationCellList());
+    private void sortReservationCell(Reservation reservation) {
+        reservation.getReservationCellList().sort(Comparator.naturalOrder());
+    }
 
-                    String roomName = firstReservationCell.getRoom().getRoomName();
-                    String color = firstReservationCell.getRoom().getRoomColor();
-                    LocalDate date = firstReservationCell.getDate();
-                    LocalTime start = firstReservationCell.getTimeLine().getStart();
-                    LocalTime end = lastReservationCell.getTimeLine().getEnd();
+    private Function<Reservation, ReservationResponseDto> convert(ReservationGroup reservationGroup) {
+        return reservation -> {
+            ReservationCell firstReservationCell = reservation.getReservationCellList().get(0);
+            ReservationCell lastReservationCell = Iterables.getLast(reservation.getReservationCellList());
 
-                    return ReservationResponseDto.builder()
-                            .id(reservationGroup.getId())
-                            .title(reservation.getTitle())
-                            .roomName(roomName)
-                            .color(color)
-                            .start(DateTimeUtils.convert(date, start))
-                            .end(DateTimeUtils.convertZeroEndTime(date, end))
-                            .build();
-                }).collect(Collectors.toList());
+            String roomName = firstReservationCell.getRoom().getRoomName();
+            String color = firstReservationCell.getRoom().getRoomColor();
+            LocalDate date = firstReservationCell.getDate();
+            LocalTime start = firstReservationCell.getTimeLine().getStart();
+            LocalTime end = lastReservationCell.getTimeLine().getEnd();
+
+            return ReservationResponseDto.builder()
+                    .id(reservationGroup.getId())
+                    .title(reservation.getTitle())
+                    .roomName(roomName)
+                    .color(color)
+                    .start(DateTimeUtils.convert(date, start))
+                    .end(DateTimeUtils.convertZeroEndTime(date, end))
+                    .build();
+        };
     }
 }

@@ -28,7 +28,7 @@ public class DateTimeUtils {
     }
 
     public static LocalDate getIntervalDateByIndex(LocalDate date, int index) {
-        Integer addDays = REPEAT_INTERVAL_DAY * index;
+        int addDays = REPEAT_INTERVAL_DAY * index;
         return date.plusDays(addDays);
     }
 }

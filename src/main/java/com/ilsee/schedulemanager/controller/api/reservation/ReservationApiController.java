@@ -42,7 +42,6 @@ public class ReservationApiController {
 
     @PostMapping("save")
     public void saveReservation(@Valid @RequestBody ReservationRequestDto reservationRequestDto, BindingResult bindingResult) {
-        log.info("############ save!!! {}", reservationRequestDto);
         if (bindingResult.hasErrors()) {
             throw new ValidationException(ValidationErrors.COMMON);
         }

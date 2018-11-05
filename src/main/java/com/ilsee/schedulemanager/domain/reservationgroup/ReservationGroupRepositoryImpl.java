@@ -19,7 +19,7 @@ public class ReservationGroupRepositoryImpl extends QuerydslRepositorySupport im
     }
 
     @Override
-    public List<ReservationGroup> findAllReservationGroups(LocalDate start, LocalDate end) {
+    public List<ReservationGroup> findAllReservationGroupsBetweenDates(LocalDate start, LocalDate end) {
         return from(qReservationGroup)
                 .leftJoin(qReservationGroup.reservationList, qReservation).fetchJoin()
                 .leftJoin(qReservation.reservationCellList, qReservationCell).fetchJoin()

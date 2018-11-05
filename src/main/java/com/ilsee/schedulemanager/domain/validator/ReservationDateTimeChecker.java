@@ -19,7 +19,8 @@ public class ReservationDateTimeChecker {
     }
 
     private static boolean checkMinute(LocalDateTime dateTime) {
-        return Arrays.stream(VALID_MINUTES).anyMatch(validMinute -> validMinute.equals(dateTime.getMinute()));
+        return Arrays.stream(VALID_MINUTES)
+            .anyMatch(validMinute -> validMinute.equals(dateTime.getMinute()));
     }
 
     private static boolean checkRange(LocalDateTime start, LocalDateTime end) {

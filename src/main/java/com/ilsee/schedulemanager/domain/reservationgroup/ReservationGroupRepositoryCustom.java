@@ -4,5 +4,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ReservationGroupRepositoryCustom {
-	List<ReservationGroup> findAllReservationGroups(LocalDate start, LocalDate end);
+	List<ReservationGroup> findAllReservationGroupsBetweenDates(LocalDate start, LocalDate end);
 }

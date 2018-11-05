@@ -14,7 +14,7 @@ public class ReservationGroupService {
 
     @Transactional(readOnly = true)
     public List<ReservationGroup> getAllReservationGroups(LocalDate start, LocalDate end) {
-        return reservationGroupRepository.findAllReservationGroups(start, end);
+        return reservationGroupRepository.findAllReservationGroupsBetweenDates(start, end);
     }
 
     @Transactional
