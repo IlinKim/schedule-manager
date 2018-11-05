@@ -41,11 +41,11 @@ $ java -jar build/libs/schedule-manager-0.0.1-SNAPSHOT.jar
       - Room
       - Timeline
 ~~~     
-ReservationGroup: 반복하는 예약들의 집합
-Reservation: 예약. 여러 ReservationCell을 가짐
-ReservationCell: 30분 단위의 예악 cell
-Room: 컨퍼런스 룸
-TimeLine: 30분단위의 시간 집합 테이블
+- ReservationGroup: 반복하는 예약들의 집합
+- Reservation: 예약. 여러 ReservationCell을 가짐
+- ReservationCell: 30분 단위의 예악 cell
+- Room: 컨퍼런스 룸
+- TimeLine: 30분단위의 시간 집합 테이블
 
 ## 문제 해결
 1. 동시성 및 중복 처리
