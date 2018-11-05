@@ -1,5 +1,8 @@
 # Conference Room Reservation
 
+## DEMO Page
+[Click Here](http://13.209.88.132:8080/)
+
 ## Environment
 - Spring Boot 2.1.0
 - Java 1.8
