@@ -28,10 +28,13 @@ public class ReservationRequestDto {
     @Max(10)
     @NotNull
     private Integer repeatCount;
+    @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
+    @NotNull
     @DateTimeFormat(pattern = CLIENT_TIME_FORMAT)
     private LocalTime startTime;
+    @NotNull
     @DateTimeFormat(pattern = CLIENT_TIME_FORMAT)
     private LocalTime endTime;
 }

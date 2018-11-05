@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -30,10 +29,10 @@ public class ReservationRequestDateValidator implements Validator {
         }
     }
 
-    private boolean validateDateTime(@NotNull LocalDate date, @NotNull LocalTime startTime, @NotNull LocalTime endTime) {
+    private boolean validateDateTime(LocalDate date, LocalTime startTime, LocalTime endTime) {
         LocalDateTime start = DateTimeUtils.convert(date, startTime);
-        LocalDateTime end = DateTimeUtils.convertEndTime(date, endTime);
+        LocalDateTime end = DateTimeUtils.convertZeroEndTime(date, endTime);
 
-        return DateTimeChecker.checkAll(start, end);
+        return ReservationDateTimeChecker.checkAll(start, end);
     }
 }

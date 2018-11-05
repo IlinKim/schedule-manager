@@ -20,7 +20,7 @@ public class DateTimeUtils {
         return LocalDateTime.of(date, time);
     }
 
-    public static LocalDateTime convertEndTime(LocalDate date, LocalTime endTime) {
+    public static LocalDateTime convertZeroEndTime(LocalDate date, LocalTime endTime) {
         if (endTime.equals(ZERO_TIME)) {
             return convert(date.plusDays(1), endTime);
         }

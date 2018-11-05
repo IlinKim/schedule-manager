@@ -38,7 +38,7 @@ public class ReservationResponseDtoConverter implements Function<ReservationGrou
                             .roomName(roomName)
                             .color(color)
                             .start(DateTimeUtils.convert(date, start))
-                            .end(DateTimeUtils.convertEndTime(date, end))
+                            .end(DateTimeUtils.convertZeroEndTime(date, end))
                             .build();
                 }).collect(Collectors.toList());
     }
